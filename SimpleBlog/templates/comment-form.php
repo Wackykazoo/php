@@ -18,7 +18,7 @@
 
 <h3>Add your comment</h3>
 
-<form method="post" class="comment-form">
+<form method="post" class="comment-form user-form">
     <div>
         <label for="comment-name">Name: </label>
         <input type="text" id="comment-name" name="comment-name" value="<?php echo htmlEscape($commentData['name']) ?>"/>
