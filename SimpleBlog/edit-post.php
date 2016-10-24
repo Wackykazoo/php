@@ -46,7 +46,8 @@ if($_POST){
         //Decide if we are editing or adding
         if($postId){
             editPost($pdo, $title, $body, $postId);
-        } else {
+        }
+        else {
             $userId = getAuthUserId($pdo);
             $postId = addPost($pdo, $title, $body, $userId);
 
@@ -95,7 +96,7 @@ if($_POST){
             </div>
             <div>
                 <label for="post-body">Body:</label>
-                <textarea name="post-body" id="post-body" cols="70" rows="12"><?php htmlEscape($body) ?></textarea>
+                <textarea name="post-body" id="post-body" cols="70" rows="12"><?php echo htmlEscape($body) ?></textarea>
             </div>
             <div>
                 <input type="submit" value="Save post" />

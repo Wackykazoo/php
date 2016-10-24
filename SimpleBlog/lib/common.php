@@ -41,7 +41,7 @@
     }
 
     /**
-     * Escapse HTML so it is safe to output
+     * Escape HTML so it is safe to output
      *
      * @param string $html
      * @return string
@@ -65,10 +65,13 @@
      * Gets a list of posts in reverse order
      *
      * @param PDO $pdo
+     * @throws Exception
      * @return array
      */
     function getAllPosts(PDO $pdo){
-        $stmt = $pdo -> query('SELECT id, title, created_at, body
+        $stmt = $pdo -> query('SELECT id, title, created_at, body, (SELECT COUNT(*)
+                                                                      FROM comment
+                                                                      WHERE comment.post_id = post.id) comment_count
                                 FROM post
                                 ORDER BY created_at DESC');
         if($stmt === false){
@@ -104,23 +107,6 @@
     }
 
     /**
-     * Returns the number of comments for the specified post
-     *
-     * @param PDO $pdo
-     * @param integer $postId
-     * @return integer
-     */
-    function countCommentsForPost(PDO $pdo, $postId){
-        $sql = "SELECT COUNT(*) c
-                    FROM comment
-                    WHERE post_id = :post_id";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute(array('post_id' => $postId, ));
-
-        return (int)$stmt->fetchColumn();
-    }
-
-    /**
      * Returns all the comments for the specified post
      *
      * @param PDO $pdo
@@ -140,7 +126,8 @@
     function tryLogin(PDO $pdo, $username, $password){
         $sql = "SELECT password
                 FROM user
-                WHERE username = :username";
+                WHERE username = :username
+                AND is_enabled = 1";
 
         $stmt = $pdo -> prepare($sql);
         $stmt -> execute(array('username' => $username));
@@ -192,7 +179,8 @@ function getAuthUserId(PDO $pdo){
 
     $sql = "SELECT id
             FROM user
-            WHERE username = :username";
+            WHERE username = :username
+            AND is_enabled = 1";
 
     $stmt = $pdo -> prepare($sql);
     $stmt -> execute(array('username' => getAuthUser()));

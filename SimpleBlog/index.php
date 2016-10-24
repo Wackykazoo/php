@@ -34,7 +34,7 @@
                     <div class="meta">
                         <?php echo convertSqlDate($post['created_at']) ?>
 
-                        (<?php echo countCommentsForPost($pdo, $post['id']) ?> commnets)
+                        (<?php echo $post['comment_count'] ?> comments)
                     </div>
                     <p><?php echo htmlEscape($post['body']) ?></p>
                     <div class="post-controls">
@@ -42,7 +42,7 @@
                             Read more...
                         </a>
                         <?php if(isLoggedIn()): ?>
-                        <a href="edit-post.php?post_id=<?php $post['id'] ?>">Edit</a>
+                        <a href="edit-post.php?post_id=<?php echo $post['id'] ?>">Edit</a>
                         <?php endif ?>
                     </div>
                 </div>
